@@ -17,9 +17,7 @@ const { findById } = require("../models/users");
       cb(null, file.fieldname + '-' + uniqueSuffix)
     }
   })*/
-  const upload = process.env.NODE_ENV === "production" 
-  ? multer({ storage: cloudinaryStorage }) 
-  : multer({ storage: diskStorage });
+ const { upload } = require("./cloudinaryConfig");
 
 router
 .get("/add-newblog",(req,res)=>{
