@@ -1,6 +1,10 @@
 require("dotenv").config(); // Load .env variables
 
+const cloudinary = require('cloudinary').v2;
 
+cloudinary.config({
+  cloudinary_url: process.env.CLOUDINARY_URL
+});
 const express=require("express");
 const path=require("path");
 const cookieParser = require('cookie-parser')
