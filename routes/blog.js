@@ -8,7 +8,7 @@ const Comment =require("../models/comment");
 const { findById } = require("../models/users");
 
 
-const storage = multer.diskStorage({
+/*const storage = multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, './public/uploads')
     },
@@ -16,8 +16,10 @@ const storage = multer.diskStorage({
       const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
       cb(null, file.fieldname + '-' + uniqueSuffix)
     }
-  })
-  const { upload } = require("./cloudinaryConfig"); // adjust path
+  })*/
+  const upload = process.env.NODE_ENV === "production" 
+  ? multer({ storage: cloudinaryStorage }) 
+  : multer({ storage: diskStorage });
 
 router
 .get("/add-newblog",(req,res)=>{
