@@ -1,0 +1,22 @@
+const User=require("../models/users");
+const{createHmac,randomBytes}=require("crypto");
+const{createTokenforUser,validateToken}=require("../service/authentication");
+
+async function  matchPassword(email,password){
+    const user=await User.findOne({email});
+    if(!user)
+        {throw new Error("User not found");
+            
+        }
+    const salt=user.salt;
+    const hashedpassword=user.password;
+    const enterdpassword=createHmac('sha256',salt).update(password).digest("hex");
+    if(hashedpassword!==enterdpassword)
+        {
+        throw new Error("Incorrect password");
+    }
+    const token=await createTokenforUser(user);
+    return token;
+};
+
+module.exports={matchPassword};

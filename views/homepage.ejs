@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Blog</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  line-height: 1.6;
+  background: #f9f9f9;
+  color: #333;
+}
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Header */
+header {
+  background: #1f1f1f;
+  color: white;
+  padding: 1rem 0;
+}
+
+.logo {
+  float: left;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+nav ul {
+  float: right;
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: #00bcd4;
+}
+
+header::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Hero */
+.hero {
+  background: #00bcd4;
+  color: white;
+  padding: 4rem 0;
+  text-align: center;
+}
+
+.hero h2 {
+  font-size: 2.5rem;
+}
+
+.hero .btn {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.7rem 1.5rem;
+  background: white;
+  color: #00bcd4;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* Posts */
+.posts-section {
+  padding: 3rem 0;
+}
+
+.posts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.post {
+  background: white;
+  border-radius: 5px;
+  padding: 1rem;
+  flex: 1 1 45%;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.post img {
+  width: 100%;
+  border-radius: 5px;
+}
+
+.post h3 {
+  margin: 1rem 0 0.5rem;
+}
+
+.post a {
+  color: #00bcd4;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+
+/* Profile Image Small */
+  .profile-img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+  }
+
+  /* Dropdown Window */
+  .dropdown-window {
+    display: none;
+    position: absolute;
+    top: 55px;
+    right: 0;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    width: 220px;
+    padding: 1rem;
+    z-index: 1000;
+  }
+
+  /* Profile Info */
+  .profile-info {
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  .profile-img-large {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 0.5rem;
+  }
+
+  .name {
+    font-weight: bold;
+    margin: 0;
+  }
+
+  .email {
+    font-size: 0.85rem;
+    color: gray;
+    margin: 0;
+  }
+
+  /* Logout Button */
+  .logout-btn {
+    display: block;
+    background: #dc3545;
+    color: white;
+    text-align: center;
+    padding: 0.5rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .logout-btn:hover {
+    background: #b52a36;
+  }
+
+  /* Position Fix */
+  .profile-dropdown {
+    position: relative;
+  }
+
+/* Footer */
+footer {
+  background: #1f1f1f;
+  color: white;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <!-- Header -->
+<header>
+  <div class="container">
+    <h1 class="logo">BLOGIFY</h1>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/posts">Posts</a></li>
+        <li><a href="/about">About</a></li>
+
+        <% if (locals.user) { %>
+          <!-- Add Blog Link -->
+          <li><a href="/blog/add-newblog">Add Blog</a></li>
+
+          <!-- Profile Dropdown -->
+          <li class="profile-dropdown">
+            <img src="<%= locals.user.profileImageUrl || '/default-avatar.png' %>" 
+                 alt=<%= locals.user.fullname %> class="profile-img" id="profileBtn">
+
+            <!-- Dropdown Window -->
+            <div class="dropdown-window" id="profileMenu">
+              <div class="profile-info">
+                <img src="<%= locals.user.profileImageUrl || '/default-avatar.png' %>" alt="Profile" class="profile-img-large">
+                <p class="name"><%= locals.user.name %></p>
+                <% if (locals.user.email) { %>
+                  <p class="email"><%= locals.user.email %></p>
+                <% } %>
+              </div>
+              <a href="/user/logout" class="logout-btn">Logout</a>
+            </div>
+          </li>
+        <% } else { %>
+          <!-- Show Login if no user -->
+          <li><a href="/login">Login</a></li>
+        <% } %>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <h2>Welcome to BLOGIFY</h2>
+      <p>Discover stories, insights, and ideas from across the web.</p>
+      <a href="#" class="btn">Read Latest Posts</a>
+    </div>
+  </section>
+
+  <!-- Recent Posts -->
+  <section class="posts-section">
+    <div class="container">
+      <h2>Recent Posts</h2>
+      <div class="posts">
+      <% if (locals.allBlogs) { %>
+        <% for (let index = 0; index < 6; index++) { 
+     let blog = allBlogs[allBlogs.length - 1 - index];
+     if (!blog) continue; 
+%>
+  <article class="post">
+    <img src="<%= blog.coverImageUrl %>" alt="Post Image" />
+    <h3><%= blog.title %></h3>
+    <p><%= blog.body.split(" ").slice(0, 25).join(" ") %>...</p>
+    <a href="/blog/<%= blog._id %>">Read more →</a>
+  </article>
+<% } %>
+
+       
+      <% } %>
+        
+        <!-- Add more posts here -->
+      </div>
+    </div>
+  </section>
+
+  
+
+  <!-- Footer -->
+  <footer>
+    <div class="col-md-4 col-lg-4 col-xl-3 mx-auto mt-3">
+        <h5 class="text-uppercase mb-4 font-weight-bold text-primary">CodingLab</h5>
+        <p>
+          A simple blogging platform for developers to share their thoughts, tutorials, and tech explorations.
+        </p>
+      </div>
+
+      <!-- Links -->
+      <div class="col-md-4 col-lg-3 col-xl-2 mx-auto mt-3">
+        <h5 class="text-uppercase mb-4 font-weight-bold text-primary">Quick Links</h5>
+        <p><a href="#Home" class="text-dark text-decoration-none">Home</a></p>
+        <p><a href="/blog/add-newblog" class="text-dark text-decoration-none">Add Blog</a></p>
+        <p><a href="/login" class="text-dark text-decoration-none">Login</a></p>
+        <p><a href="/signin" class="text-dark text-decoration-none">Register</a></p>
+      </div>
+
+      <!-- Contact -->
+      <div class="col-md-4 col-lg-4 col-xl-3 mx-auto mt-3">
+        <h5 class="text-uppercase mb-4 font-weight-bold text-primary">Contact</h5>
+        <p><i class="bi bi-house-door-fill me-2"></i> Pune, India</p>
+        <p><i class="bi bi-envelope-fill me-2"></i> vedashrisatle@gmail.com</p>
+        <p><i class="bi bi-phone-fill me-2"></i> +91 XXXXXXXXXX</p>
+      </div>
+
+    </div>
+
+    <hr class="mb-4"/>
+    <div class="container">
+      <p>&copy; 2025 MyBlog. All rights reserved.</p>
+    </div>
+  </footer>
+<script> document.addEventListener("DOMContentLoaded", function() {
+    const profileBtn = document.getElementById("profileBtn");
+    const profileMenu = document.getElementById("profileMenu");
+
+    profileBtn.addEventListener("click", function(event) {
+      event.stopPropagation();
+      profileMenu.style.display = (profileMenu.style.display === "block") ? "none" : "block";
+    });
+
+    // Close when clicking outside
+    document.addEventListener("click", function() {
+      profileMenu.style.display = "none";
+    });
+  });
+  </script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #f4f9fc;
+      color: #333;
+    }
+
+    /* Navbar */
+    nav {
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 75px;
+      background: #000;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    }
+    nav .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 100%;
+      max-width: 90%;
+      margin: auto;
+    }
+    nav .navbar .logo a {
+      color: #fff;
+      font-size: 27px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    nav .navbar .menu {
+      display: flex;
+    }
+    .navbar .menu li {
+      list-style: none;
+      margin: 0 15px;
+    }
+    .navbar .menu li a {
+      color: #fff;
+      font-size: 17px;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    /* Container */
+    .container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 75px);
+      padding-top: 20px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+      padding: 40px;
+      width: 400px;
+      max-width: 90%;
+    }
+
+    .card h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #2980b9;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    .form-group input:focus {
+      border-color: #2980b9;
+      outline: none;
+      box-shadow: 0 0 5px rgba(41, 128, 185, 0.5);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      background: #2980b9;
+      color: #fff;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn:hover {
+      background: #1f6691;
+    }
+
+    .alert {
+      background: #ffdddd;
+      color: #d8000c;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="navbar">
+      <div class="logo"><a href="/">BLOGIFY</a></div>
+      <ul class="menu">
+        <li><a href="/">Home</a></li>
+        <li><a href="/login">Login</a></li>
+        <li><a href="/about">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Sign In Form -->
+  <div class="container">
+    <div class="card">
+      <h2>Sign In</h2>
+
+      <% if (locals.error) { %>
+        <div class="alert"><%= locals.error %></div>
+      <% } %>
+
+      <form action="/user/signin" method="post">
+        <div class="form-group">
+          <label for="fullname">Full Name</label>
+          <input type="text" id="fullname" name="fullname" placeholder="Enter full name">
+        </div>
+        <div class="form-group">
+          <label for="email">Username / Email</label>
+          <input type="text" id="email" name="email" placeholder="Enter email or username">
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Enter password">
+        </div>
+        <button type="submit" class="btn">Sign In</button>
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= blog.title %></title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #ffffff;
+      color: #333;
+      font-family: Arial, sans-serif;
+      text-align: center; /* Center headings, images, etc. */
+    }
+
+    /* Navbar Styling */
+    .navbar {
+      background-color: #000;
+    }
+
+    .navbar .navbar-brand,
+    .navbar .nav-link {
+      color: #fff !important;
+    }
+
+    .navbar .nav-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Blog Body */
+    .blog-body {
+      font-size: 1rem;
+      margin-top: 20px;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border-radius: 8px;
+      text-align: justify; /* Justify text inside blog body */
+      display: inline-block; /* Prevent full width */
+      max-width: 800px;
+    }
+
+    /* Comment Section */
+    .comment {
+      background-color: #f1f1f1;
+      border-radius: 4px;
+      padding: 10px;
+      text-align: left; /* Keep comments aligned left for readability */
+      max-width: 800px;
+      margin: auto;
+    }
+
+    .comment p {
+      margin: 0;
+    }
+
+    a {
+      text-decoration: none;
+      color: #007bff;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* Center forms */
+    form {
+      max-width: 800px;
+      margin: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="/">My Blog</a>
+      <div>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+          <% if (!locals.user) { %>
+            <li class="nav-item"><a class="nav-link" href="/signin">Sign In</a></li>
+          <% } else { %>
+            <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+          <% } %>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Blog Content -->
+  <div class="container mt-4">
+    <h3><%= blog.title %></h3>
+    <img class="img-fluid mt-3" src="<%= blog.coverImageUrl %>" alt="Blog Image" style="max-width: 800px; border-radius: 8px;">
+    <div class="blog-body mt-3">
+      <%= blog.body %>
+    </div>
+  </div>
+
+  <!-- Sign-in Alert -->
+  <% if (!locals.user) { %>
+    <div class="alert alert-danger mt-4 container" style="max-width: 800px;" role="alert">
+      <a href="/signin">Sign in to add your comment</a>
+    </div>
+  <% } %>
+
+  <!-- Comment Form -->
+  <% if (locals.user) { %>
+    <div class="container mt-4">
+      <h3>Comments (<%= allComments.length %>)</h3>
+      <form action="/blog/comment/<%= blog._id %>" method="post">
+        <input type="text" name="content" class="form-control mb-2" placeholder="Write a comment" required>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  <% } %>
+
+  <!-- Comment List -->
+  <% if (locals.allComments) { %>
+    <% allComments.forEach(comment => { %>
+      <div class="comment container mt-3">
+        <p><strong><%= comment.userid %>:</strong> <%= comment.content %></p>
+      </div>
+    <% }) %>
+  <% } %>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
