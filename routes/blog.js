@@ -17,27 +17,24 @@ const storage = multer.diskStorage({
       cb(null, file.fieldname + '-' + uniqueSuffix)
     }
   })
-  
-  const upload = multer({ storage: storage })
+  const { upload } = require("./cloudinaryConfig"); // adjust path
+
 router
 .get("/add-newblog",(req,res)=>{
     return res.render("addblog",{user:req.user});
 })
 .post("/new", upload.single("coverImage"), async (req, res) => {
-  try {
-    const { title, body } = req.body;
-
-    const blog = await Blog.create({
+ try {
+    const { title, content } = req.body;
+    const newBlog = new Blog({
       title,
-      body,
-      createdby: req.user.fullname, // ✅ This sets the author properly
-      coverImageUrl: `/uploads/${req.file.filename}`,
-      
+      content,
+      coverImageUrl: req.file.path, // Cloudinary URL
     });
-
-    res.redirect(`/blog/${blog._id}`);
+    await newBlog.save();
+    res.redirect("/blog");
   } catch (err) {
-    console.error("Blog creation failed:", err);
+    console.error(err);
     res.status(500).send("Internal Server Error");
   }
 })
