@@ -24,7 +24,9 @@ app.use(cookieParser());
 connectMongoDb(process.env.MONGODB_URI);
 
 app.set("view engine","ejs");
-app.set("views",path.resolve("./views"));
+app.set("views", path.join(__dirname, "views"));
+
+
 app.use(checkAuth("token"));
 
 app.use("/",staticRouter);
