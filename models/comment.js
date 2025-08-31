@@ -13,7 +13,7 @@ const commentSchema= new Schema({
         ref:"blog",
     },
     userid:{
-        type:String,
+        type:Schema.Types.ObjectId,
         ref:"user",
 
     }

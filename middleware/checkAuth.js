@@ -11,7 +11,8 @@ function checkAuth(cookiename){
             const userpayload=validateToken(tokenCookievalue);
             req.user=userpayload;
         }catch(error){
-
+            res.clearCookie(cookiename);
+            req.user = null;
         }
         next();
     }

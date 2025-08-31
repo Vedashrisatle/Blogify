@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Blogs - BLOGIFY</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #f8f9fa;
+      color: #333;
+      font-family: Arial, sans-serif;
+    }
+    .blog-card {
+      background: white;
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .blog-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+  </style>
+  <script>
+    async function deleteBlog(blogId) {
+      if (confirm("Are you sure you want to delete this blog? This action cannot be undone.")) {
+        try {
+          // Show loading state
+          const deleteBtn = event.target;
+          const originalText = deleteBtn.innerHTML;
+          deleteBtn.innerHTML = 'Deleting...';
+          deleteBtn.disabled = true;
+
+          const response = await fetch('/blog/delete/' + blogId, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+
+          if (response.ok) {
+            // Show success message
+            alert('Blog deleted successfully!');
+            location.reload();
+          } else if (response.status === 403) {
+            alert('You are not authorized to delete this blog.');
+          } else if (response.status === 404) {
+            alert('Blog not found.');
+          } else {
+            alert('Failed to delete blog. Please try again.');
+          }
+        } catch (err) {
+          console.error('Delete error:', err);
+          alert('Network error. Please check your connection and try again.');
+        } finally {
+          // Reset button state
+          const deleteBtn = event.target;
+          deleteBtn.innerHTML = 'Delete';
+          deleteBtn.disabled = false;
+        }
+      }
+    }
+  </script>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="/">BLOGIFY</a>
+      <div class="navbar-nav ms-auto">
+        <a class="nav-link" href="/">Home</a>
+        <a class="nav-link" href="/blog/add-newblog">Add Blog</a>
+        <% if (locals.user) { %>
+          <a class="nav-link" href="/user/logout">Logout</a>
+        <% } %>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <h2>My Blogs</h2>
+    <% if (userBlogs && userBlogs.length > 0) { %>
+      <div class="row">
+        <% userBlogs.forEach(blog => { %>
+          <div class="col-md-6 col-lg-4">
+            <div class="blog-card">
+              <img src="<%= blog.coverImageUrl %>" alt="Blog Image" />
+              <h5 class="mt-2"><%= blog.title %></h5>
+              <p><%= blog.body.substring(0, 100) %>...</p>
+              <div class="d-flex gap-2">
+                <a href="/blog/<%= blog._id %>" class="btn btn-primary btn-sm">View Blog</a>
+                <button class="btn btn-danger btn-sm" onclick="deleteBlog('<%= blog._id %>')">Delete</button>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <div class="alert alert-info">
+        <h4>No blogs found</h4>
+        <p>You haven't created any blogs yet. <a href="/blog/add-newblog">Create your first blog</a></p>
+      </div>
+    <% } %>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

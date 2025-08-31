@@ -18,7 +18,7 @@ const blogSchema=new Schema({
         required:false,
     },
     createdby:{
-    type:String,
+    type:Schema.Types.ObjectId,
     ref:"user",
     }
 },   

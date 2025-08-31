@@ -53,6 +53,7 @@ nav a {
 
 nav a:hover {
   color: #00bcd4;
+  text-decoration: none;
 }
 
 header::after {
@@ -93,19 +94,26 @@ header::after {
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
+  justify-content: center;
 }
 
 .post {
   background: white;
   border-radius: 5px;
   padding: 1rem;
-  flex: 1 1 45%;
+  flex: 0 0 300px;
+  max-width: 300px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
 }
 
 .post img {
   width: 100%;
+  height: 180px;
+  object-fit: cover;
   border-radius: 5px;
+  flex-shrink: 0;
 }
 
 .post h3 {
@@ -167,6 +175,24 @@ header::after {
     margin: 0;
   }
 
+  /* Dropdown Links */
+  .dropdown-link {
+    display: block;
+    color: #333;
+    text-decoration: none;
+    padding: 0.5rem;
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+    text-align: center;
+    font-weight: bold;
+    background: #f8f9fa;
+    transition: background 0.3s;
+  }
+
+  .dropdown-link:hover {
+    background: #e9ecef;
+  }
+
   /* Logout Button */
   .logout-btn {
     display: block;
@@ -217,18 +243,21 @@ footer {
 
           <!-- Profile Dropdown -->
           <li class="profile-dropdown">
-            <img src="<%= locals.user.profileImageUrl || '/default-avatar.png' %>" 
+            <img src="<%= locals.user.profileImageURL || '/default-avatar.png' %>"
                  alt=<%= locals.user.fullname %> class="profile-img" id="profileBtn">
 
             <!-- Dropdown Window -->
             <div class="dropdown-window" id="profileMenu">
               <div class="profile-info">
-                <img src="<%= locals.user.profileImageUrl || '/default-avatar.png' %>" alt="Profile" class="profile-img-large">
+                <img src="<%= locals.user.profileImageURL || '/default-avatar.png' %>" alt="Profile" class="profile-img-large">
                 <p class="name"><%= locals.user.name %></p>
                 <% if (locals.user.email) { %>
                   <p class="email"><%= locals.user.email %></p>
                 <% } %>
               </div>
+              <a href="/user/my-blogs" class="dropdown-link">My Blogs</a>
+              <a href="/user/my-comments" class="dropdown-link">My Comments</a>
+              <a href="/user/edit-profile" class="dropdown-link">Edit Profile</a>
               <a href="/user/logout" class="logout-btn">Logout</a>
             </div>
           </li>
@@ -247,12 +276,12 @@ footer {
     <div class="container">
       <h2>Welcome to BLOGIFY</h2>
       <p>Discover stories, insights, and ideas from across the web.</p>
-      <a href="#" class="btn">Read Latest Posts</a>
+      <a href="#recent-posts" class="btn">Read Latest Posts</a>
     </div>
   </section>
 
   <!-- Recent Posts -->
-  <section class="posts-section">
+  <section class="posts-section" id="recent-posts">
     <div class="container">
       <h2>Recent Posts</h2>
       <div class="posts">
@@ -325,6 +354,21 @@ footer {
     document.addEventListener("click", function() {
       profileMenu.style.display = "none";
     });
+
+    // Smooth scrolling for "Read Latest Posts" button
+    const readLatestBtn = document.querySelector('.hero .btn');
+    if (readLatestBtn) {
+      readLatestBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetSection = document.getElementById('recent-posts');
+        if (targetSection) {
+          targetSection.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    }
   });
   </script>
 </body>

@@ -64,6 +64,56 @@ header::after {
 }
 
 
+/* Search Bar */
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+  gap: 1rem;
+}
+
+.search-input {
+  padding: 0.75rem 1rem;
+  border: 2px solid #ddd;
+  border-radius: 25px;
+  font-size: 1rem;
+  width: 100%;
+  max-width: 400px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.search-input:focus {
+  border-color: #00bcd4;
+}
+
+.search-btn, .clear-btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 25px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.search-btn {
+  background: #00bcd4;
+  color: white;
+}
+
+.search-btn:hover {
+  background: #0097a7;
+}
+
+.clear-btn {
+  background: #6c757d;
+  color: white;
+}
+
+.clear-btn:hover {
+  background: #5a6268;
+}
+
 /* Posts */
 .posts-section {
   padding: 3rem 0;
@@ -79,13 +129,19 @@ header::after {
   background: white;
   border-radius: 5px;
   padding: 1rem;
-  flex: 1 1 45%;
+  flex: 0 0 300px;
+  max-width: 300px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
 }
 
 .post img {
   width: 100%;
+  height: 180px;
+  object-fit: cover;
   border-radius: 5px;
+  flex-shrink: 0;
 }
 
 .post h3 {
@@ -129,7 +185,15 @@ footer {
   <!-- Recent Posts -->
   <section class="posts-section">
     <div class="container">
-      <h2>Recent Posts</h2>
+      <h2>All Posts</h2>
+
+      <!-- Search Bar -->
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search posts by title..." class="search-input">
+        <button id="searchBtn" class="search-btn">Search</button>
+        <button id="clearBtn" class="clear-btn">Clear</button>
+      </div>
+
       <div class="posts">
       <% if (locals.allBlogs) { %>
         <% allBlogs.forEach(blog => { %>
@@ -192,6 +256,53 @@ footer {
     </div>
   </footer>
 
-    
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const searchInput = document.getElementById('searchInput');
+      const searchBtn = document.getElementById('searchBtn');
+      const clearBtn = document.getElementById('clearBtn');
+      const posts = document.querySelectorAll('.post');
+
+      // Search functionality
+      function performSearch() {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+
+        posts.forEach(post => {
+          const title = post.querySelector('h3').textContent.toLowerCase();
+          const content = post.querySelector('p').textContent.toLowerCase();
+
+          if (title.includes(searchTerm) || content.includes(searchTerm)) {
+            post.style.display = 'block';
+          } else {
+            post.style.display = 'none';
+          }
+        });
+      }
+
+      // Clear search
+      function clearSearch() {
+        searchInput.value = '';
+        posts.forEach(post => {
+          post.style.display = 'block';
+        });
+      }
+
+      // Event listeners
+      searchBtn.addEventListener('click', performSearch);
+
+      clearBtn.addEventListener('click', clearSearch);
+
+      // Search on Enter key press
+      searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          performSearch();
+        }
+      });
+
+      // Real-time search (optional - uncomment if you want live search)
+      // searchInput.addEventListener('input', performSearch);
+    });
+  </script>
+
 </body>
 </html>

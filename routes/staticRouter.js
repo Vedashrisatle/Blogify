@@ -11,13 +11,13 @@ router
     return res.render("signin");
 })
 .get("/",async (req,res)=>{
-    const allBlogs= await Blog.find({}).populate("createdby","fullname","profileImageURL");
+    const allBlogs= await Blog.find({}).populate("createdby","fullname profileImageURL");
     const user=await req.user;
 
     return res.render("homepage",{user,allBlogs});
 })
 .get("/posts",async(req,res)=>{
-    const allBlogs= await Blog.find({}).populate("createdby","fullname","profileImageURL");
+    const allBlogs= await Blog.find({}).populate("createdby","fullname profileImageURL");
     const user=await req.user;
     return res.render("posts",{user,allBlogs});
 })
