@@ -60,91 +60,7 @@ header::after {
       object-fit: cover;
       border-radius: 5px;
     }/* Profile Image Small */
-  .profile-img {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    object-fit: cover;
-    cursor: pointer;
-  }
-
-  /* Dropdown Window */
-  .dropdown-window {
-    display: none;
-    position: absolute;
-    top: 55px;
-    right: 0;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    width: 220px;
-    padding: 1rem;
-    z-index: 1000;
-  }
-
-  /* Profile Info */
-  .profile-info {
-    text-align: center;
-    margin-bottom: 1rem;
-  }
-
-  .profile-img-large {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 0.5rem;
-  }
-
-  .name {
-    font-weight: bold;
-    margin: 0;
-  }
-
-  .email {
-    font-size: 0.85rem;
-    color: gray;
-    margin: 0;
-  }
-
-  /* Dropdown Links */
-  .dropdown-link {
-    display: block;
-    color: #333;
-    text-decoration: none;
-    padding: 0.5rem;
-    border-radius: 5px;
-    margin-bottom: 0.5rem;
-    text-align: center;
-    font-weight: bold;
-    background: #f8f9fa;
-    transition: background 0.3s;
-  }
-
-  .dropdown-link:hover {
-    background: #e9ecef;
-  }
-
-  /* Logout Button */
-  .logout-btn {
-    display: block;
-    background: #dc3545;
-    color: white;
-    text-align: center;
-    padding: 0.5rem;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: bold;
-  }
-
-  .logout-btn:hover {
-    background: #b52a36;
-  }
-
-  /* Position Fix */
-  .profile-dropdown {
-    position: relative;
-  }
+  
   </style>
   <script>
     async function deleteBlog(blogId) {
@@ -197,34 +113,7 @@ header::after {
         <li><a href="/posts">Posts</a></li>
         <li><a href="/about">About</a></li>
 
-        <% if (locals.user) { %>
-          <!-- Add Blog Link -->
-          <li><a href="/blog/add-newblog">Add Blog</a></li>
-
-          <!-- Profile Dropdown -->
-          <li class="profile-dropdown">
-            <img src="<%= locals.user.profileImageURL || '/default-avatar.png' %>"
-                 alt=<%= locals.user.fullname %> class="profile-img" id="profileBtn">
-
-            <!-- Dropdown Window -->
-            <div class="dropdown-window" id="profileMenu">
-              <div class="profile-info">
-                <img src="<%= locals.user.profileImageURL || '/default-avatar.png' %>" alt="Profile" class="profile-img-large">
-                <p class="name"><%= locals.user.name %></p>
-                <% if (locals.user.email) { %>
-                  <p class="email"><%= locals.user.email %></p>
-                <% } %>
-              </div>
-              <a href="/user/my-blogs" class="dropdown-link">My Blogs</a>
-              <a href="/user/my-comments" class="dropdown-link">My Comments</a>
-              <a href="/user/edit-profile" class="dropdown-link">Edit Profile</a>
-              <a href="/user/logout" class="logout-btn">Logout</a>
-            </div>
-          </li>
-        <% } else { %>
-          <!-- Show Login if no user -->
-          <li><a href="/login">Login</a></li>
-        <% } %>
+       
       </ul>
     </nav>
   </div>
