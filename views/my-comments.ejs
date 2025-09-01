@@ -18,22 +18,87 @@
       margin-bottom: 1rem;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
+/* Header */
+header {
+  background: #1f1f1f;
+  color: white;
+  padding: 1rem 0;
+}
+
+.logo {
+  float: left;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+nav ul {
+  float: right;
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: #00bcd4;
+  text-decoration: none;
+}
+
+header::after {
+  content: "";
+  display: table;
+  clear: both;
+}
   </style>
 </head>
 <body>
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-      <a class="navbar-brand" href="/">BLOGIFY</a>
-      <div class="navbar-nav ms-auto">
-        <a class="nav-link" href="/">Home</a>
-        <a class="nav-link" href="/blog/add-newblog">Add Blog</a>
+  <header>
+  <div class="container">
+    <h1 class="logo">BLOGIFY</h1>
+    <nav>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/posts">Posts</a></li>
+        <li><a href="/about">About</a></li>
+
         <% if (locals.user) { %>
-          <a class="nav-link" href="/user/logout">Logout</a>
+          <!-- Add Blog Link -->
+          <li><a href="/blog/add-newblog">Add Blog</a></li>
+
+          <!-- Profile Dropdown -->
+          <li class="profile-dropdown">
+            <img src="<%= locals.user.profileImageURL || '/default-avatar.png' %>"
+                 alt=<%= locals.user.fullname %> class="profile-img" id="profileBtn">
+
+            <!-- Dropdown Window -->
+            <div class="dropdown-window" id="profileMenu">
+              <div class="profile-info">
+                <img src="<%= locals.user.profileImageURL || '/default-avatar.png' %>" alt="Profile" class="profile-img-large">
+                <p class="name"><%= locals.user.name %></p>
+                <% if (locals.user.email) { %>
+                  <p class="email"><%= locals.user.email %></p>
+                <% } %>
+              </div>
+              <a href="/user/my-blogs" class="dropdown-link">My Blogs</a>
+              <a href="/user/my-comments" class="dropdown-link">My Comments</a>
+              <a href="/user/edit-profile" class="dropdown-link">Edit Profile</a>
+              <a href="/user/logout" class="logout-btn">Logout</a>
+            </div>
+          </li>
+        <% } else { %>
+          <!-- Show Login if no user -->
+          <li><a href="/login">Login</a></li>
         <% } %>
-      </div>
-    </div>
-  </nav>
+      </ul>
+    </nav>
+  </div>
+</header>
+
 
   <div class="container mt-4">
     <h2>My Comments</h2>
