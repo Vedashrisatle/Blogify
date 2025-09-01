@@ -22,7 +22,7 @@ router
     const newBlog = new Blog({
       title,
       body,
-      coverImageUrl: req.file.path, // Cloudinary URL
+      coverImageUrl: req.file ? req.file.path : null,
       createdby: user._id,
     });
     await newBlog.save();
