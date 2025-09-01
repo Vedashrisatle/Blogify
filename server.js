@@ -33,8 +33,5 @@ app.use("/blog",blogRouter);
 
 
 
-app.listen(PORT,()=>{
-    console.log(`Server started at : ${PORT}`);
-});
 
 module.exports = app;
